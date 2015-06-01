@@ -25,7 +25,9 @@ import java.text.NumberFormat;
  * A placeholder fragment containing a simple view.
  */
 public class MenuPageFragment extends Fragment {
+
     private MenuCategory mMenuCategory;
+    private static final String KEY_CATEGORY = "MenuCategory";
 
     public static MenuPageFragment newInstance(MenuCategory menuCategory) {
         MenuPageFragment result = new MenuPageFragment();
@@ -36,6 +38,11 @@ public class MenuPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        //If we have saved data, restored them
+        if(null != savedInstanceState){
+            mMenuCategory = (MenuCategory) savedInstanceState.getSerializable(KEY_CATEGORY);
+        }
 
         View result = inflater.inflate(R.layout.fragment_menu, container, false);
 
@@ -56,6 +63,13 @@ public class MenuPageFragment extends Fragment {
         });
 
         return result;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //Need to persist local data here. When orientation changes, this data has to be restored
+        outState.putSerializable(KEY_CATEGORY, mMenuCategory);
+        super.onSaveInstanceState(outState);
     }
 
     public class MenuItemArrayAdapter extends ArrayAdapter<MenuItem> {
