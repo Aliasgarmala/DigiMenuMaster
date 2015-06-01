@@ -25,7 +25,6 @@ import java.text.NumberFormat;
  * A placeholder fragment containing a simple view.
  */
 public class MenuPageFragment extends Fragment {
-
     private MenuCategory mMenuCategory;
     private static final String KEY_CATEGORY = "MenuCategory";
 
