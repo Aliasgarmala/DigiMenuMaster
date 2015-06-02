@@ -9,7 +9,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +20,10 @@
             android:name=".MenuActivity"
             android:label="@string/app_name" />
         <activity android:name=".MenuItemActivity" />
+
+        <service
+            android:name=".NetworkOpService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

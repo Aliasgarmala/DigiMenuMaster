@@ -1,5 +1,6 @@
 package com.infusion.digimenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -12,7 +13,7 @@ import com.infusion.digimenu.model.MenuItem;
 import java.text.NumberFormat;
 
 public class MenuItemActivity extends ActionBarActivity {
-    public static final String BUNDLE_MENU_ITEM = "MenuItem";
+    public static final String BUNDLE_MENU_ITEM = "com.infusion.digimenu.extra.BUNDLE_MENU_ITEM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,10 @@ public class MenuItemActivity extends ActionBarActivity {
 
     private void sendLikeAsync(int menuItemId) {
         // perform service to notify of like
+//        Intent intent = new Intent(NetworkOpService.ACTION_LIKE_MENU_ITEM);
+        Intent intent = new Intent(this, NetworkOpService.class);
+        intent.putExtra(NetworkOpService.EXTRA_MENU_ITEM_ID, menuItemId);
 
+        startService(intent);
     }
 }

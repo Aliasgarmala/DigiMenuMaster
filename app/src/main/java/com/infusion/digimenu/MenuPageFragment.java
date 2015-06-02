@@ -25,8 +25,12 @@ import java.text.NumberFormat;
  * A placeholder fragment containing a simple view.
  */
 public class MenuPageFragment extends Fragment {
+    private static final String KEY_CATEGORY = "com.infusion.digimenu.MenuPageFragment.KEY_CATEGORY";
     private MenuCategory mMenuCategory;
-    private static final String KEY_CATEGORY = "MenuCategory";
+
+    public MenuPageFragment() {
+        super();
+    }
 
     public static MenuPageFragment newInstance(MenuCategory menuCategory) {
         MenuPageFragment result = new MenuPageFragment();
@@ -39,7 +43,7 @@ public class MenuPageFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         //If we have saved data, restored them
-        if(null != savedInstanceState){
+        if (null != savedInstanceState) {
             mMenuCategory = (MenuCategory) savedInstanceState.getSerializable(KEY_CATEGORY);
         }
 
