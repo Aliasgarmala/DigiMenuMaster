@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.infusion.digimenu.R;
 import com.infusion.digimenu.model.Location;
+import com.infusion.digimenu.model.Menu;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -15,17 +16,27 @@ import java.io.InputStreamReader;
  * Created by ali on 2015-05-31.
  */
 public class MenuDataSourceImpl implements MenuDataSource {
-    private Gson mGson;
     private Context mContext;
 
     public MenuDataSourceImpl(Context context) {
         this.mContext = context;
-        mGson = new Gson();
     }
 
     @Override
-    public void getMenuAsync(Location location, MenuDataSourceListener listener) {
-        com.infusion.digimenu.model.Menu result = null;
+    public void getMenuAsync(final Location location, final MenuDataSourceListener listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Menu menu = getMenu(location);
+                delaySafely(1500);      // add an artificial delay
+
+                listener.onMenuRetrieved(menu);
+            }
+        }).start();
+    }
+
+    private Menu getMenu(Location location) {
+        com.infusion.digimenu.model.Menu result;
 
         try {
             InputStream inputStream = mContext.getResources().openRawResource(R.raw.menu);
@@ -40,9 +51,16 @@ public class MenuDataSourceImpl implements MenuDataSource {
         } catch (final Exception e) {
             Log.e(MenuDataSourceImpl.class.getName(), "Failed to retrieve menu.", e);
             result = null;
-        } finally {
-            // notify user of retrieve menu
-            listener.onMenuRetrieved(result);
+        }
+
+        return result;
+    }
+
+    private void delaySafely(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }

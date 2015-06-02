@@ -9,9 +9,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/loadingTextView"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:layout_above="@+id/showMenuButton"
         android:orientation="vertical">
 
         <ImageView
@@ -25,20 +25,20 @@
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginTop="16dp"
+            android:gravity="center"
             android:text="Infusion Diner"
-            android:textSize="45sp"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="45sp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/showMenuButton"
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
+    <TextView
+        android:id="@+id/loadingTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:fontFamily="sans-serif-light"
-        android:text="Let's Eat!"
-        android:textSize="20sp" />
+        android:gravity="center"
+        android:text="Loading..."
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
 </RelativeLayout>

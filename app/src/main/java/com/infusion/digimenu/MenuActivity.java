@@ -9,26 +9,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
-import com.infusion.digimenu.datasource.MenuDataSource;
-import com.infusion.digimenu.datasource.MenuDataSourceImpl;
 import com.infusion.digimenu.model.Menu;
 import com.infusion.digimenu.model.MenuCategory;
-import com.infusion.digimenu.service.MenuService;
-import com.infusion.digimenu.service.MenuServiceImpl;
-import com.infusion.digimenu.service.MenuServiceListener;
 
 
-public class MenuActivity extends ActionBarActivity implements MenuServiceListener, ActionBar.TabListener {
+public class MenuActivity extends ActionBarActivity implements ActionBar.TabListener {
 
-    private final MenuService mMenuService;
+    public static final String BUNDLE_MENU = "com.infusion.digimenu.extra.BUNDLE_MENU";
 
     private ViewPager mViewPager;
     private ActionBar mActionBar;
-
-    public MenuActivity() {
-        MenuDataSource menuDataSource = new MenuDataSourceImpl(this);
-        mMenuService = new MenuServiceImpl(menuDataSource);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +31,30 @@ public class MenuActivity extends ActionBarActivity implements MenuServiceListen
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
-        // retrieve the latest menu
-        mMenuService.getMenuAsync(this);
+        // retrieve the menu from the bundle
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            // invalid argument - no menu specified
+            return;
+        }
+
+        loadMenu((Menu) bundle.get(BUNDLE_MENU));
     }
 
     @Override
-    public void onMenuRetrieved(com.infusion.digimenu.model.Menu menu) {
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        mViewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+    }
+
+    private void loadMenu(com.infusion.digimenu.model.Menu menu) {
         // create the adapter to map from model object to tab - apply it
         FragmentPagerAdapter menuPagerAdapter = new MenuPagerAdapter(getSupportFragmentManager(), menu);
         mViewPager.setAdapter(menuPagerAdapter);
@@ -64,19 +72,6 @@ public class MenuActivity extends ActionBarActivity implements MenuServiceListen
             mActionBar.addTab(mActionBar.newTab()
                     .setText(menuPagerAdapter.getPageTitle(i)).setTabListener(this));
         }
-    }
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
     }
 
     public class MenuPagerAdapter extends FragmentPagerAdapter {
