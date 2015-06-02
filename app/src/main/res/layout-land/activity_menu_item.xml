@@ -41,4 +41,12 @@
         android:fontFamily="sans-serif-light"
         android:text="Menu Item Description Menu Item Description Menu Item Description Menu Item Description Menu Item Description"
         android:textSize="18sp" />
+
+    <ImageButton
+        android:id="@+id/likeButton"
+        android:layout_width="40dp"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/like" />
 </RelativeLayout>

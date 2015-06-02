@@ -2,6 +2,7 @@ package com.infusion.digimenu;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ public class MenuItemActivity extends ActionBarActivity {
             return;
         }
 
-        MenuItem menuItem = (MenuItem) bundle.get(BUNDLE_MENU_ITEM);
+        final MenuItem menuItem = (MenuItem) bundle.get(BUNDLE_MENU_ITEM);
         setTitle(menuItem.name);
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
@@ -36,5 +37,17 @@ public class MenuItemActivity extends ActionBarActivity {
 
         TextView priceTextView = (TextView) findViewById(R.id.priceTextView);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(menuItem.price));
+
+        findViewById(R.id.likeButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendLikeAsync(menuItem.id);
+            }
+        });
+    }
+
+    private void sendLikeAsync(int menuItemId) {
+        // perform service to notify of like
+
     }
 }

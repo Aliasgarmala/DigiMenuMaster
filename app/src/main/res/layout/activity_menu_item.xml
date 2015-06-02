@@ -1,40 +1,54 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:scaleType="centerCrop"
-            android:background="@android:color/darker_gray" />
-
-        <TextView
-            android:id="@+id/priceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/priceTextView"
-            android:layout_gravity="right"
-            android:background="@android:color/white"
-            android:fontFamily="sans-serif-light"
-            android:padding="6dp"
-            android:text="$0.00"
-            android:textSize="16sp" />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/descriptionTextView"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imageView"
-        android:layout_marginTop="12dp"
-        android:fontFamily="sans-serif-light"
-        android:text="Menu Item Description Menu Item Description Menu Item Description Menu Item Description Menu Item Description"
-        android:textSize="18sp" />
-</LinearLayout>
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="@android:color/darker_gray"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/priceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/priceTextView"
+                android:layout_gravity="right"
+                android:background="@android:color/white"
+                android:fontFamily="sans-serif-light"
+                android:padding="6dp"
+                android:text="$0.00"
+                android:textSize="16sp" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView"
+            android:layout_marginTop="12dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Menu Item Description Menu Item Description Menu Item Description Menu Item Description Menu Item Description"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/likeButton"
+        android:layout_width="40dp"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/like" />
+</RelativeLayout>
