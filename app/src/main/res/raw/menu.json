@@ -5,6 +5,7 @@
       "name": "Starters",
       "items": [
         {
+          "id": 1,
           "name": "Golden Calamari",
           "description": "Marinated calamari breaded and cooked to order. Served with roasted garlic lemon aioli and a spicy Sriracha cocktail sauce.",
           "isSpicy": false,
@@ -12,6 +13,7 @@
           "price": 11.34
         },
         {
+          "id": 2,
           "name": "Featured Soup",
           "description": "Ask for today's unique and delicious feature.",
           "isSpicy": true,
@@ -24,6 +26,7 @@
       "name": "Entrees",
       "items": [
         {
+          "id": 3,
           "name": "The Classic Burger",
           "description": "A great flame-grilled patty standing alone in all its glory.",
           "isSpicy": false,
@@ -31,6 +34,7 @@
           "price": 11.97
         },
         {
+          "id": 4,
           "name": "Sauced Up Chicken Fingers",
           "description": "Our legendary Chicken Fingers tossed in your choice of mild, medium or hot Buffalo wing sauce. Served with Yukon Gold fries and dipping sauce.",
           "isSpicy": true,
@@ -38,6 +42,7 @@
           "price": 14.58
         },
         {
+          "id": 5,
           "name": "Pad Thai",
           "description": "Rice noodles with bean sprouts, caramelized onions, fried egg, red peppers, green onions and crushed peanuts in a tamarind Pad Thai sauce. Topped with your choice of sweet & spicy tofu, chicken or shrimp.",
           "isSpicy": false,
@@ -50,6 +55,7 @@
       "name": "Dessert",
       "items": [
         {
+          "id": 6,
           "name": "New York Vanilla Cheesecake",
           "description": "Made with only the finest ingredients! A deliciously rich and smooth cheesecake with a graham cracker crust. Served with your choice of topping: Chocolate, Caramel or Bumbleberry.",
           "isSpicy": false,
@@ -62,6 +68,7 @@
       "name": "Beverages",
       "items": [
         {
+          "id": 7,
           "name": "Freshly Squeezed Sparkling Lemonade",
           "description": "Also available as Limeade, Orangeade or Cranberry-Lemonade",
           "isSpicy": false,
@@ -69,6 +76,7 @@
           "price": 2.99
         },
         {
+          "id": 8,
           "name": "Soda",
           "description": "Coca Cola, Pepsi, Sprite, Mountain Dew",
           "isSpicy": false,
