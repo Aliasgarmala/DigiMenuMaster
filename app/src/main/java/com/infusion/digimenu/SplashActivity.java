@@ -8,17 +8,18 @@ import android.widget.TextView;
 
 import com.infusion.digimenu.datasource.MenuDataSource;
 import com.infusion.digimenu.datasource.MenuDataSourceImpl;
-import com.infusion.digimenu.service.MenuService;
-import com.infusion.digimenu.service.MenuServiceImpl;
-import com.infusion.digimenu.service.MenuServiceListener;
+import com.infusion.digimenu.datasource.MenuDataSourceObserver;
+import com.infusion.digimenu.model.Location;
+import com.infusion.digimenu.model.Menu;
+
+import java.util.Observable;
 
 
-public class SplashActivity extends Activity implements MenuServiceListener {
-    private final MenuService mMenuService;
+public class SplashActivity extends Activity implements MenuDataSourceObserver {
+    private final MenuDataSource mMenuDataSource;
 
     public SplashActivity() {
-        MenuDataSource menuDataSource = new MenuDataSourceImpl(this);
-        mMenuService = new MenuServiceImpl(menuDataSource);
+        mMenuDataSource = new MenuDataSourceImpl(this);
     }
 
     @Override
@@ -31,15 +32,37 @@ public class SplashActivity extends Activity implements MenuServiceListener {
 
         TextView loadingTextView = (TextView) findViewById(R.id.loadingTextView);
         applyTypeface(loadingTextView);
-
-        // retrieve the latest menu
-        mMenuService.getMenuAsync(this);
     }
 
     @Override
-    public void onMenuRetrieved(com.infusion.digimenu.model.Menu menu) {
-        // create the adapter to map from model object to tab - apply it
-        // determine the item clicked - navigate to detail page
+    protected void onResume() {
+        super.onResume();
+
+        Location currentLocation = new Location(0, 0);
+
+        // retrieve the latest menu
+        mMenuDataSource.addObserver(this);
+        mMenuDataSource.getMenu(currentLocation);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        mMenuDataSource.deleteObserver(this);
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        if (data == null) {
+            // invalid result - guard
+            return;
+        }
+
+        handleMenuRetrieved((Menu) data);
+    }
+
+    private void handleMenuRetrieved(Menu menu) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(MenuActivity.BUNDLE_MENU, menu);
 

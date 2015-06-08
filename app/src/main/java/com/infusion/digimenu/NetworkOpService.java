@@ -24,13 +24,8 @@ public class NetworkOpService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-//        if (intent != null) {
-//            final String action = intent.getAction();
-//            if (ACTION_LIKE_MENU_ITEM.equals(action)) {
         final int itemId = intent.getIntExtra(EXTRA_MENU_ITEM_ID, -1);
         handleActionLikeMenuItem(itemId);
-//            }
-//        }
     }
 
     private void handleActionLikeMenuItem(int menuItemId) {
