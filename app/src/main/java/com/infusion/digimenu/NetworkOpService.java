@@ -37,7 +37,7 @@ public class NetworkOpService extends IntentService {
         super.onCreate();
 
         try {
-            mClient = new MobileServiceClient(SERVICE_URI, APPLICATION_KEY, this);
+            mClient = new MobileServiceClient(BuildConfig.MOBILE_SERVICE_URI, BuildConfig.MOBILE_SERVICE_API_KEY, this);
         } catch (MalformedURLException e) {
             Log.e(NetworkOpService.class.getName(), "Failed to instantiate service client.", e);
         }
@@ -62,7 +62,7 @@ public class NetworkOpService extends IntentService {
             @Override
             public void onCompleted(JsonElement jsonObject, Exception exception, ServiceFilterResponse response) {
                 if (exception != null) {
-                    // failure
+                    // failed to send like request to distributed service.
                     Log.e(NetworkOpService.class.getName(), String.format("Failed to send like for menu item %d.", menuItemId), exception);
                 }
             }

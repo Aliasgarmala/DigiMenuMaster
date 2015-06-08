@@ -12,7 +12,14 @@ android {
         versionName "1.0"
     }
     buildTypes {
+        debug {
+            buildConfigField("String", "MOBILE_SERVICE_URI", "\"https://digimenu.azure-mobile.net/\"");
+            buildConfigField("String", "MOBILE_SERVICE_API_KEY", "\"DRUHVEpsiDexVdaeqmUspPbamWIyXq56\"");
+        }
         release {
+            buildConfigField("String", "MOBILE_SERVICE_URI", "\"https://digimenu.azure-mobile.net/\"");
+            buildConfigField("String", "MOBILE_SERVICE_API_KEY", "\"DRUHVEpsiDexVdaeqmUspPbamWIyXq56\"");
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
