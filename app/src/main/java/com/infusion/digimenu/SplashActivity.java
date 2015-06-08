@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.infusion.digimenu.datasource.MenuDataSource;
 import com.infusion.digimenu.datasource.MenuDataSourceAzureImpl;
-import com.infusion.digimenu.datasource.MenuDataSourceImpl;
 import com.infusion.digimenu.datasource.MenuDataSourceObserver;
 import com.infusion.digimenu.model.Menu;
 
@@ -35,7 +34,7 @@ public class SplashActivity extends Activity implements MenuDataSourceObserver {
             mMenuDataSource = new MenuDataSourceAzureImpl(this);
         } catch (MalformedURLException e) {
             // failed to initialize data source - fatal error
-            Log.wtf(SplashActivity.class.getName(), "Failed to initialize data source.", e);
+            Log.wtf(SplashActivity.class.getName(), "Failed to instantiate data source.", e);
             finish();
         }
     }

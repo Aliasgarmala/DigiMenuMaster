@@ -2,21 +2,25 @@ package com.infusion.digimenu;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
+import android.util.Pair;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import com.google.gson.JsonElement;
+import com.microsoft.windowsazure.mobileservices.ApiJsonOperationCallback;
+import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
 
-import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NetworkOpService extends IntentService {
     public static final String EXTRA_MENU_ITEM_ID = "com.infusion.digimenu.extra.MENU_ITEM_ID";
-    private static final String HTTP_URI_LIKE = "https://www.digimenu.azuremobile.net/likeMenuItem";
+
+    private static final String SERVICE_URI = "https://digimenu.azure-mobile.net/";
+    private static final String APPLICATION_KEY = "DRUHVEpsiDexVdaeqmUspPbamWIyXq56";
+
+    private MobileServiceClient mClient;
 
     public NetworkOpService() {
         super("NetworkOpService");
@@ -25,26 +29,43 @@ public class NetworkOpService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         final int itemId = intent.getIntExtra(EXTRA_MENU_ITEM_ID, -1);
-        handleActionLikeMenuItem(itemId);
+        postLike(itemId);
     }
 
-    private void handleActionLikeMenuItem(int menuItemId) {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        try {
+            mClient = new MobileServiceClient(SERVICE_URI, APPLICATION_KEY, this);
+        } catch (MalformedURLException e) {
+            Log.e(NetworkOpService.class.getName(), "Failed to instantiate service client.", e);
+        }
+    }
+
+    private void postLike(final int menuItemId) {
+        if (mClient == null) {
+            // invalid reference of client - guard
+            Log.e(NetworkOpService.class.getName(), String.format("Failed to send like for menu item %d. Invalid null reference of service client.", menuItemId));
+            return;
+        }
+
         if (menuItemId < 0) {
             // invalid menu item - guard
             return;
         }
 
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(HTTP_URI_LIKE);
+        List<Pair<String, String>> parameters = new ArrayList<>();
+        parameters.add(new Pair<>("id", Integer.toString(menuItemId)));
 
-        List<NameValuePair> nameValuePair = new ArrayList<>(1);
-        nameValuePair.add(new BasicNameValuePair("id", Integer.toString(menuItemId)));
-
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
-            httpClient.execute(httpPost);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+        mClient.invokeApi("like", "POST", parameters, new ApiJsonOperationCallback() {
+            @Override
+            public void onCompleted(JsonElement jsonObject, Exception exception, ServiceFilterResponse response) {
+                if (exception != null) {
+                    // failure
+                    Log.e(NetworkOpService.class.getName(), String.format("Failed to send like for menu item %d.", menuItemId), exception);
+                }
+            }
+        });
     }
 }
