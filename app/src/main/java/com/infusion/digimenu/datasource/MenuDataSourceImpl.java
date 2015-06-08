@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.infusion.digimenu.R;
-import com.infusion.digimenu.model.Location;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -22,7 +21,7 @@ public class MenuDataSourceImpl extends MenuDataSource {
     }
 
     @Override
-    public void getMenu(Location location) {
+    public void getMenu(String country) {
         new Thread(new Runnable() {
             public void run() {
                 com.infusion.digimenu.model.Menu result;
