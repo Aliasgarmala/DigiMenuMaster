@@ -17,9 +17,6 @@ import java.util.List;
 public class NetworkOpService extends IntentService {
     public static final String EXTRA_MENU_ITEM_ID = "com.infusion.digimenu.extra.MENU_ITEM_ID";
 
-    private static final String SERVICE_URI = "https://digimenu.azure-mobile.net/";
-    private static final String APPLICATION_KEY = "DRUHVEpsiDexVdaeqmUspPbamWIyXq56";
-
     private MobileServiceClient mClient;
 
     public NetworkOpService() {
