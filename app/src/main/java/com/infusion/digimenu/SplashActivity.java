@@ -4,15 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.infusion.digimenu.datasource.MenuDataSource;
-import com.infusion.digimenu.datasource.MenuDataSourceAzureImpl;
+import com.infusion.digimenu.datasource.MenuDataSourceHttpImpl;
 import com.infusion.digimenu.datasource.MenuDataSourceObserver;
 import com.infusion.digimenu.model.Menu;
 
-import java.net.MalformedURLException;
 import java.util.Observable;
 
 
@@ -30,13 +28,7 @@ public class SplashActivity extends Activity implements MenuDataSourceObserver {
         TextView loadingTextView = (TextView) findViewById(R.id.loadingTextView);
         applyTypeface(loadingTextView);
 
-        try {
-            mMenuDataSource = new MenuDataSourceAzureImpl(this);
-        } catch (MalformedURLException e) {
-            // failed to initialize data source - fatal error
-            Log.wtf(SplashActivity.class.getName(), "Failed to instantiate data source.", e);
-            finish();
-        }
+        mMenuDataSource = new MenuDataSourceHttpImpl();
     }
 
     @Override
