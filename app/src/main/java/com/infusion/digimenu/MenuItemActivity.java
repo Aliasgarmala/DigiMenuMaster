@@ -3,7 +3,11 @@ package com.infusion.digimenu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,13 +43,17 @@ public class MenuItemActivity extends ActionBarActivity {
         TextView priceTextView = (TextView) findViewById(R.id.priceTextView);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(menuItem.price));
 
-        findViewById(R.id.likeButton).setOnClickListener(new View.OnClickListener() {
+        final ImageButton likeButton = (ImageButton)findViewById(R.id.likeButton);
+
+        likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                likeButton.animate().scaleY(0f).scaleX(0f).setInterpolator(new AnticipateInterpolator()).alpha(0).setDuration(500);
                 sendLikeAsync(menuItem.id);
             }
         });
     }
+
 
     private void sendLikeAsync(int menuItemId) {
         // perform service to notify of like
@@ -53,5 +61,16 @@ public class MenuItemActivity extends ActionBarActivity {
         intent.putExtra(NetworkOpService.EXTRA_MENU_ITEM_ID, menuItemId);
 
         startService(intent);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        final ImageButton likeButton = (ImageButton)findViewById(R.id.likeButton);
+        float y = likeButton.getY();
+        likeButton.setY(0);
+        likeButton.setAlpha(0f);
+        likeButton.animate().setInterpolator(new BounceInterpolator()).setDuration(1000).y(y).alpha(1);
+        Log.d(this.getClass().getName(), "onWindowFocusChanged");
     }
 }

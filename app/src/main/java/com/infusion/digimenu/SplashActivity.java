@@ -8,14 +8,17 @@ import android.widget.TextView;
 
 import com.infusion.digimenu.datasource.MenuDataSource;
 import com.infusion.digimenu.datasource.MenuDataSourceHttpImpl;
-import com.infusion.digimenu.datasource.MenuDataSourceObserver;
+import com.infusion.digimenu.location.CountryLocator;
+import com.infusion.digimenu.location.CountryLocatorImpl;
 import com.infusion.digimenu.model.Menu;
 
 import java.util.Observable;
+import java.util.Observer;
 
 
-public class SplashActivity extends Activity implements MenuDataSourceObserver {
+public class SplashActivity extends Activity implements Observer {
     private MenuDataSource mMenuDataSource;
+    private CountryLocator mCountryLocator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,23 +32,28 @@ public class SplashActivity extends Activity implements MenuDataSourceObserver {
         applyTypeface(loadingTextView);
 
         mMenuDataSource = new MenuDataSourceHttpImpl();
+        mCountryLocator = new CountryLocatorImpl(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        String country = getCountry();
+        mCountryLocator.addObserver(this);
+        mCountryLocator.locateCountry();
 
-        // retrieve the latest menu
-        mMenuDataSource.addObserver(this);
-        mMenuDataSource.getMenu(country);
+//        String country = getCountry();
+//
+//        // retrieve the latest menu
+//        mMenuDataSource.addObserver(this);
+//        mMenuDataSource.getMenu(country);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
+        mCountryLocator.deleteObserver(this);
         mMenuDataSource.deleteObserver(this);
     }
 
@@ -56,7 +64,14 @@ public class SplashActivity extends Activity implements MenuDataSourceObserver {
             return;
         }
 
-        handleMenuRetrieved((Menu) data);
+        if (observable instanceof CountryLocator) {
+            String country = (String) data;
+            // retrieve the latest menu
+            mMenuDataSource.addObserver(this);
+            mMenuDataSource.getMenu(country);
+        } else if (observable instanceof MenuDataSource) {
+            handleMenuRetrieved((Menu) data);
+        }
     }
 
     private void handleMenuRetrieved(Menu menu) {
@@ -70,7 +85,7 @@ public class SplashActivity extends Activity implements MenuDataSourceObserver {
         finish();
     }
 
-    private String getCountry(){
+    private String getCountry() {
         return "Canada";
     }
 
