@@ -25,7 +25,7 @@
         <activity android:name=".MenuItemActivity" />
 
         <service
-            android:name=".NetworkOpService"
+            android:name=".LikeMenuItemService"
             android:exported="false"></service>
     </application>
 

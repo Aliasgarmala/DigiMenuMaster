@@ -57,8 +57,8 @@ public class MenuItemActivity extends ActionBarActivity {
 
     private void sendLikeAsync(int menuItemId) {
         // perform service to notify of like
-        Intent intent = new Intent(this, NetworkOpService.class);
-        intent.putExtra(NetworkOpService.EXTRA_MENU_ITEM_ID, menuItemId);
+        Intent intent = new Intent(this, LikeMenuItemService.class);
+        intent.putExtra(LikeMenuItemService.EXTRA_MENU_ITEM_ID, menuItemId);
 
         startService(intent);
     }
