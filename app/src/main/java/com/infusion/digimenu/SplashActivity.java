@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.infusion.digimenu.datasource.MenuDataSource;
 import com.infusion.digimenu.datasource.MenuDataSourceHttpImpl;
-import com.infusion.digimenu.location.CountryLocator;
-import com.infusion.digimenu.location.CountryLocatorImpl;
 import com.infusion.digimenu.model.Menu;
 
 import java.util.Observable;
@@ -18,7 +16,6 @@ import java.util.Observer;
 
 public class SplashActivity extends Activity implements Observer {
     private MenuDataSource mMenuDataSource;
-    private CountryLocator mCountryLocator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,28 +27,23 @@ public class SplashActivity extends Activity implements Observer {
         applyTypeface((TextView) findViewById(R.id.loadingTextView));
 
         mMenuDataSource = new MenuDataSourceHttpImpl();
-        mCountryLocator = new CountryLocatorImpl(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        mCountryLocator.addObserver(this);
-        mCountryLocator.locateCountry();
+        final String country = "Canada";
 
-//        String country = getCountry();
-//
-//        // retrieve the latest menu
-//        mMenuDataSource.addObserver(this);
-//        mMenuDataSource.getMenuAsync(country);
+        // retrieve the latest menu
+        mMenuDataSource.addObserver(this);
+        mMenuDataSource.getMenuAsync(country);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        mCountryLocator.deleteObserver(this);
         mMenuDataSource.deleteObserver(this);
     }
 
@@ -62,14 +54,7 @@ public class SplashActivity extends Activity implements Observer {
             return;
         }
 
-        if (observable instanceof CountryLocator) {
-            String country = (String) data;
-            // retrieve the latest menu
-            mMenuDataSource.addObserver(this);
-            mMenuDataSource.getMenuAsync(country);
-        } else if (observable instanceof MenuDataSource) {
-            handleMenuRetrieved((Menu) data);
-        }
+        handleMenuRetrieved((Menu) data);
     }
 
     private void handleMenuRetrieved(Menu menu) {
@@ -81,10 +66,6 @@ public class SplashActivity extends Activity implements Observer {
 
         startActivity(intent);
         finish();
-    }
-
-    private String getCountry() {
-        return "Canada";
     }
 
     private void applyTypeface(TextView textView) {
