@@ -25,11 +25,9 @@ public class SplashActivity extends Activity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        TextView titleTextView = (TextView) findViewById(R.id.titleTextView);
-        applyTypeface(titleTextView);
-
-        TextView loadingTextView = (TextView) findViewById(R.id.loadingTextView);
-        applyTypeface(loadingTextView);
+        // apply custom font family for text controls
+        applyTypeface((TextView) findViewById(R.id.titleTextView));
+        applyTypeface((TextView) findViewById(R.id.loadingTextView));
 
         mMenuDataSource = new MenuDataSourceHttpImpl();
         mCountryLocator = new CountryLocatorImpl(this);
@@ -46,7 +44,7 @@ public class SplashActivity extends Activity implements Observer {
 //
 //        // retrieve the latest menu
 //        mMenuDataSource.addObserver(this);
-//        mMenuDataSource.getMenu(country);
+//        mMenuDataSource.getMenuAsync(country);
     }
 
     @Override
@@ -68,7 +66,7 @@ public class SplashActivity extends Activity implements Observer {
             String country = (String) data;
             // retrieve the latest menu
             mMenuDataSource.addObserver(this);
-            mMenuDataSource.getMenu(country);
+            mMenuDataSource.getMenuAsync(country);
         } else if (observable instanceof MenuDataSource) {
             handleMenuRetrieved((Menu) data);
         }

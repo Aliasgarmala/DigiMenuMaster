@@ -32,7 +32,44 @@ public class MenuDataSourceHttpImpl extends MenuDataSource {
         mGson = new Gson();
     }
 
-    private static String processResponse(HttpResponse response) throws IOException, NullPointerException {
+    @Override
+    public Thread getMenuAsync(final String country) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getMenu(country);
+            }
+        };
+
+        Thread result = new Thread(runnable);
+        result.start();
+
+        return result;
+    }
+
+    private void getMenu(final String country) {
+        // create the HTTP GET request object
+        // add Microsoft Azure Mobile Service authentication header value
+        HttpUriRequest request = new HttpGet(BuildConfig.MOBILE_SERVICE_URI + API_METHOD_GET_MENU + URLEncoder.encode(country));
+        request.addHeader("X-ZUMO-APPLICATION", BuildConfig.MOBILE_SERVICE_API_KEY);
+
+        try {
+            // execute the web request
+            HttpResponse response = mHttpClient.execute(request);
+
+            // deserialize the menu response
+            String payload = processResponse(response);
+            Menu result = mGson.fromJson(payload, Menu.class);
+
+            // notify the listeners of response
+            setChanged();
+            notifyObservers(result);
+        } catch (Exception e) {
+            Log.e(MenuDataSourceHttpImpl.class.getName(), "Failed to retrieve menu from web service for country " + country, e);
+        }
+    }
+
+    private String processResponse(HttpResponse response) throws IOException, NullPointerException {
         HttpEntity entity = response.getEntity();
         String result = "";
         String line;
@@ -46,31 +83,5 @@ public class MenuDataSourceHttpImpl extends MenuDataSource {
         // close the reader - return
         reader.close();
         return result;
-    }
-
-    @Override
-    public void getMenu(final String country) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpUriRequest request = new HttpGet(BuildConfig.MOBILE_SERVICE_URI + API_METHOD_GET_MENU + URLEncoder.encode(country));
-                request.addHeader("X-ZUMO-APPLICATION", BuildConfig.MOBILE_SERVICE_API_KEY);
-
-                try {
-                    // perform web request
-                    HttpResponse response = mHttpClient.execute(request);
-
-                    // deserialize json response to object
-                    String payload = processResponse(response);
-                    Menu result = mGson.fromJson(payload, Menu.class);
-
-                    // notify listeners of result
-                    setChanged();
-                    notifyObservers(result);
-                } catch (Exception e) {
-                    Log.e(MenuDataSourceHttpImpl.class.getName(), "Failed to retrieve menu from web service for country " + country, e);
-                }
-            }
-        }).start();
     }
 }

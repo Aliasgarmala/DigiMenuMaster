@@ -13,26 +13,34 @@ import java.io.InputStream;
  * Reference: http://stackoverflow.com/questions/2471935/how-to-load-an-imageview-by-url-in-android
  */
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    ImageView imageView;
+    ImageView mImageView;
 
     public DownloadImageTask(ImageView imageView) {
-        this.imageView = imageView;
+        mImageView = imageView;
     }
 
     protected Bitmap doInBackground(String... urls) {
-        String urldisplay = urls[0];
-        Bitmap mIcon11 = null;
+        Bitmap result = null;
+        String url = "";
+
         try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
-            mIcon11 = BitmapFactory.decodeStream(in);
+            url = urls[0];
+
+            InputStream stream = new java.net.URL(url).openStream();
+            result = BitmapFactory.decodeStream(stream);
         } catch (Exception e) {
-            Log.e("Error", e.getMessage());
+            Log.e(DownloadImageTask.class.getName(), "Failed to download image from " + url, e);
             e.printStackTrace();
         }
-        return mIcon11;
+        return result;
     }
 
     protected void onPostExecute(Bitmap result) {
-        imageView.setImageBitmap(result);
+        if (mImageView == null) {
+            // no image view to apply bitmap against
+            return;
+        }
+
+        mImageView.setImageBitmap(result);
     }
 }

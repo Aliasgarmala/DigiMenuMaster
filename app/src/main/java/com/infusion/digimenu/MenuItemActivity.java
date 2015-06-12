@@ -2,6 +2,8 @@ package com.infusion.digimenu;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -21,8 +23,10 @@ import com.infusion.digimenu.model.MenuItem;
 import java.text.NumberFormat;
 
 public class MenuItemActivity extends ActionBarActivity {
+
     public static final String BUNDLE_MENU_ITEM = "com.infusion.digimenu.extra.BUNDLE_MENU_ITEM";
 
+    private AsyncTask<String, Void, Bitmap> mDownloadImageTask;
     private ImageButton mLikeButton;
 
     @Override
@@ -30,49 +34,63 @@ public class MenuItemActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_item);
 
-        // retrieve the menu item from the bundle
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            // invalid argument - no menu item specified
+            // bundle expected - guard
             return;
         }
 
+        // retrieve the menu item from the bundle
         final MenuItem menuItem = (MenuItem) bundle.get(BUNDLE_MENU_ITEM);
+
+        // start download the menu item image
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        mDownloadImageTask = new DownloadImageTask(imageView).execute(menuItem.imageUri);
+
+        // setup the activity title
         setTitle(menuItem.name);
 
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-        new DownloadImageTask(imageView).execute(menuItem.imageUri);
-
+        // setup the menu item description
         TextView descriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
         descriptionTextView.setText(menuItem.description);
 
+        // setup the menu item price
         TextView priceTextView = (TextView) findViewById(R.id.priceTextView);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(menuItem.price));
 
-        mLikeButton = (ImageButton)findViewById(R.id.likeButton);
-
+        // setup the menu item like button
+        mLikeButton = (ImageButton) findViewById(R.id.likeButton);
         mLikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 animateLikeButtonOut();
-                sendLikeAsync(menuItem.id);
+                sendLike(menuItem.id);
             }
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-    private void sendLikeAsync(int menuItemId) {
-        // perform service to notify of like
-        Intent intent = new Intent(this, LikeMenuItemService.class);
-        intent.putExtra(LikeMenuItemService.EXTRA_MENU_ITEM_ID, menuItemId);
-
-        startService(intent);
+        // stop the menu item image from downloading (if it hasn't already completed)
+        if (mDownloadImageTask != null && mDownloadImageTask.getStatus() != AsyncTask.Status.FINISHED) {
+            mDownloadImageTask.cancel(true);
+        }
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         animateLikeButtonInViewXml();
+    }
+
+    private void sendLike(int menuItemId) {
+        // perform service to notify of like
+        Intent intent = new Intent(this, LikeMenuItemService.class);
+        intent.putExtra(LikeMenuItemService.EXTRA_MENU_ITEM_ID, menuItemId);
+
+        startService(intent);
     }
 
     private void animateLikeButtonInViewPropertyAnim() {
@@ -108,7 +126,7 @@ public class MenuItemActivity extends ActionBarActivity {
         objectAnimator.start();
     }
 
-    private void animateLikeButtonOut(){
+    private void animateLikeButtonOut() {
         mLikeButton.animate().scaleY(0f).scaleX(0f).setInterpolator(new AnticipateInterpolator()).alpha(0).setDuration(500);
     }
 }

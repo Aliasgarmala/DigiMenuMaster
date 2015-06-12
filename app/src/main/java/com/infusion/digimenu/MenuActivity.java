@@ -17,32 +17,32 @@ public class MenuActivity extends ActionBarActivity implements ActionBar.TabList
 
     public static final String BUNDLE_MENU = "com.infusion.digimenu.extra.BUNDLE_MENU";
 
-    private ViewPager mViewPager;
     private ActionBar mActionBar;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        // setup the actionbar
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            // bundle expected - guard
+            return;
+        }
+
+        // setup the action bar with tab layout
         mActionBar = getSupportActionBar();
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
-
-        // retrieve the menu from the bundle
-        Bundle bundle = getIntent().getExtras();
-        if (bundle == null) {
-            // invalid argument - no menu specified
-            return;
-        }
 
         loadMenu((Menu) bundle.get(BUNDLE_MENU));
     }
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        // user pressed an actionbar tab - update the tab page shown
         mViewPager.setCurrentItem(tab.getPosition());
     }
 
@@ -55,49 +55,47 @@ public class MenuActivity extends ActionBarActivity implements ActionBar.TabList
     }
 
     private void loadMenu(com.infusion.digimenu.model.Menu menu) {
-        // create the adapter to map from model object to tab - apply it
-        FragmentPagerAdapter menuPagerAdapter = new MenuPagerAdapter(getSupportFragmentManager(), menu);
-        mViewPager.setAdapter(menuPagerAdapter);
+        MenuCategory[] menuCategories = menu.categories;
 
-        // synchronize the actionbar with changes to the view pager
+        // create an actionbar tab for each category of the menu
+        for (int i = 0; i < menuCategories.length; i++) {
+            ActionBar.Tab menuCategoryTab = mActionBar.newTab();
+            menuCategoryTab.setText(menuCategories[i].name);
+            menuCategoryTab.setTabListener(this);
+
+            mActionBar.addTab(menuCategoryTab);
+        }
+
+        // create an adapter to map from menu categories (i.e. starters, entrees, etc.) to fragments of the tab view
+        MenuCategoryPagerAdapter menuCategoryPageAdapter = new MenuCategoryPagerAdapter(getSupportFragmentManager(), menuCategories);
+        mViewPager.setAdapter(menuCategoryPageAdapter);
+
+        // user swiped between tab pages - update the selected actionbar tab
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 mActionBar.setSelectedNavigationItem(position);
             }
         });
-
-        // create a tab for each menu category
-        for (int i = 0; i < menuPagerAdapter.getCount(); i++) {
-            mActionBar.addTab(mActionBar.newTab()
-                    .setText(menuPagerAdapter.getPageTitle(i)).setTabListener(this));
-        }
     }
 
-    public class MenuPagerAdapter extends FragmentPagerAdapter {
+    public class MenuCategoryPagerAdapter extends FragmentPagerAdapter {
+        private final MenuCategory[] mMenuCategories;
 
-        private final Menu mMenu;
-
-        public MenuPagerAdapter(FragmentManager fm, Menu menu) {
+        public MenuCategoryPagerAdapter(FragmentManager fm, MenuCategory[] menuCategories) {
             super(fm);
 
-            mMenu = menu;
+            mMenuCategories = menuCategories;
         }
 
         @Override
         public Fragment getItem(int position) {
-            MenuCategory menuCategory = mMenu.categories[position];
-            return MenuPageFragment.newInstance(menuCategory);
+            return MenuCategoryFragment.createNewInstance(mMenuCategories[position]);
         }
 
         @Override
         public int getCount() {
-            return mMenu.categories.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mMenu.categories[position].name;
+            return mMenuCategories.length;
         }
     }
 }

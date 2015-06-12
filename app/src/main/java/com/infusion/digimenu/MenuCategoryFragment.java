@@ -24,17 +24,20 @@ import java.text.NumberFormat;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MenuPageFragment extends Fragment {
-    private static final String KEY_CATEGORY = "com.infusion.digimenu.MenuPageFragment.KEY_CATEGORY";
+public class MenuCategoryFragment extends Fragment {
+
+    private static final String KEY_CATEGORY = "com.infusion.digimenu.MenuCategoryFragment.KEY_CATEGORY";
+
     private MenuCategory mMenuCategory;
 
-    public MenuPageFragment() {
+    public MenuCategoryFragment() {
         super();
     }
 
-    public static MenuPageFragment newInstance(MenuCategory menuCategory) {
-        MenuPageFragment result = new MenuPageFragment();
+    public static MenuCategoryFragment createNewInstance(MenuCategory menuCategory) {
+        MenuCategoryFragment result = new MenuCategoryFragment();
         result.mMenuCategory = menuCategory;
+
         return result;
     }
 
@@ -47,14 +50,20 @@ public class MenuPageFragment extends Fragment {
             mMenuCategory = (MenuCategory) savedInstanceState.getSerializable(KEY_CATEGORY);
         }
 
+        if (mMenuCategory == null) {
+            // no menu category provided - guard
+            return null;
+        }
+
         View result = inflater.inflate(R.layout.fragment_menu, container, false);
 
+        // adapt each menu item to a row in the list view
         ListView menuListView = (ListView) result.findViewById(R.id.menuItemListView);
         menuListView.setAdapter(new MenuItemArrayAdapter(getActivity(), mMenuCategory.items));
         menuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // determine the item clicked - navigate to detail page
+                // determine which item the user clicked - navigate to a details activity
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(MenuItemActivity.BUNDLE_MENU_ITEM, mMenuCategory.items[position]);
 
@@ -68,7 +77,6 @@ public class MenuPageFragment extends Fragment {
 
         return result;
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -86,7 +94,7 @@ public class MenuPageFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View result = convertView;
             if (result == null) {
-                // no view to recycle - create one from scatch
+                // no view to recycle - create a new one
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 result = inflater.inflate(R.layout.listview_menu_item, parent, false);
             }
@@ -97,13 +105,13 @@ public class MenuPageFragment extends Fragment {
             TextView nameTextView = (TextView) result.findViewById(R.id.nameTextView);
             nameTextView.setText(menuItem.name);
 
-            // adjust spicy icon
-            View spicyImageView = result.findViewById(R.id.spicyImageView);
-            spicyImageView.setVisibility(menuItem.isSpicy ? View.VISIBLE : View.GONE);
-
             // apply price
             TextView priceTextView = (TextView) result.findViewById(R.id.priceTextView);
             priceTextView.setText(NumberFormat.getCurrencyInstance().format(menuItem.price));
+
+            // adjust spicy icon
+            View spicyImageView = result.findViewById(R.id.spicyImageView);
+            spicyImageView.setVisibility(menuItem.isSpicy ? View.VISIBLE : View.GONE);
 
             return result;
         }
