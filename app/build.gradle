@@ -13,12 +13,12 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField("String", "MOBILE_SERVICE_URI", "\"https://digimenu.azure-mobile.net/\"");
-            buildConfigField("String", "MOBILE_SERVICE_API_KEY", "\"DRUHVEpsiDexVdaeqmUspPbamWIyXq56\"");
+            buildConfigField("String", "MOBILE_SERVICE_URI", "\"https://infusiondiner.azure-mobile.net/\"");
+            buildConfigField("String", "MOBILE_SERVICE_API_KEY", "\"RTyIbIJXhazyvpLgBYKFlToCZvwjby70\"");
         }
         release {
-            buildConfigField("String", "MOBILE_SERVICE_URI", "\"https://digimenu.azure-mobile.net/\"");
-            buildConfigField("String", "MOBILE_SERVICE_API_KEY", "\"DRUHVEpsiDexVdaeqmUspPbamWIyXq56\"");
+            buildConfigField("String", "MOBILE_SERVICE_URI", "\"https://infusiondiner.azure-mobile.net/\"");
+            buildConfigField("String", "MOBILE_SERVICE_API_KEY", "\"RTyIbIJXhazyvpLgBYKFlToCZvwjby70\"");
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
