@@ -62,11 +62,13 @@ public class MenuPageFragment extends Fragment {
                 intent.putExtras(bundle);
 
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
             }
         });
 
         return result;
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
