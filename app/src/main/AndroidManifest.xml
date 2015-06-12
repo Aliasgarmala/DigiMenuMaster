@@ -19,9 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MenuActivity"
-            android:label="@string/app_name" />
+
+        <!--
+        =======================================
+        LAB 1
+        =======================================
+        1.  Create an <activity> entry for the MenuActivity
+        2.  Set the label attribute to @string/app_name
+        -->
+
         <activity android:name=".MenuItemActivity" />
 
         <service

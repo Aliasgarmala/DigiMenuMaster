@@ -1,7 +1,6 @@
 package com.infusion.digimenu;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -61,10 +60,12 @@ public class SplashActivity extends Activity implements Observer {
         Bundle bundle = new Bundle();
         bundle.putSerializable(MenuActivity.BUNDLE_MENU, menu);
 
-        Intent intent = new Intent(this, MenuActivity.class);
-        intent.putExtras(bundle);
+        // =======================================
+        // LAB 1
+        // =======================================
+        // 1.   Create an explicit intent for the MenuActivity
+        // 2.   Add the bundle object as an extra
 
-        startActivity(intent);
         finish();
     }
 
