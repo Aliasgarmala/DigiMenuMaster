@@ -24,15 +24,14 @@ public class LikeMenuItemService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        final int id = intent.getIntExtra(EXTRA_MENU_ITEM_ID, -1);
-
-        HttpUriRequest request = new HttpPost(BuildConfig.MOBILE_SERVICE_URI + API_METHOD_POST_LIKE + id);
-        request.addHeader("X-ZUMO-APPLICATION", BuildConfig.MOBILE_SERVICE_API_KEY);
-
-        try {
-            mHttpClient.execute(request);
-        } catch (Exception e) {
-            Log.e(LikeMenuItemService.class.getName(), "Failed to send like for menu item " + id, e);
-        }
+        // =======================================
+        // LAB 3
+        // =======================================
+        // 1.   Retrieve the menu item id from the intent extras
+        // 2.   Create an HttpPost object with target url: BuildConfig.MOBILE_SERVICE_URI + API_METHOD_POST_LIKE + menuItemId
+        //          i.e. https://infusiondiner.azure-mobile.net/api/like?id=1
+        // 3.   Use the HttpClient (i.e. mHttpClient) to execute the HttpPost operation
+        //
+        // *** HINT: take a look at MenuDataSourceHttpImpl.getMenu method
     }
 }

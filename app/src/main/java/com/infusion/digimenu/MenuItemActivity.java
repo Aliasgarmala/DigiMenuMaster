@@ -86,11 +86,11 @@ public class MenuItemActivity extends ActionBarActivity {
     }
 
     private void sendLike(int menuItemId) {
-        // perform service to notify of like
-        Intent intent = new Intent(this, LikeMenuItemService.class);
-        intent.putExtra(LikeMenuItemService.EXTRA_MENU_ITEM_ID, menuItemId);
-
-        startService(intent);
+        // =======================================
+        // LAB 3
+        // =======================================
+        // 1. Create an explicit intent to start the LikeMenuItemService service
+        // 2. Pass the menuItemId value as an extra
     }
 
     private void animateLikeButtonInViewPropertyAnim() {
