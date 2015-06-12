@@ -14,12 +14,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.infusion.digimenu.model.MenuCategory;
 import com.infusion.digimenu.model.MenuItem;
-
-import java.text.NumberFormat;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -99,19 +96,12 @@ public class MenuCategoryFragment extends Fragment {
                 result = inflater.inflate(R.layout.listview_menu_item, parent, false);
             }
 
-            MenuItem menuItem = mMenuCategory.items[position];
-
-            // apply item name
-            TextView nameTextView = (TextView) result.findViewById(R.id.nameTextView);
-            nameTextView.setText(menuItem.name);
-
-            // apply price
-            TextView priceTextView = (TextView) result.findViewById(R.id.priceTextView);
-            priceTextView.setText(NumberFormat.getCurrencyInstance().format(menuItem.price));
-
-            // adjust spicy icon
-            View spicyImageView = result.findViewById(R.id.spicyImageView);
-            spicyImageView.setVisibility(menuItem.isSpicy ? View.VISIBLE : View.GONE);
+            // =======================================
+            // LAB 2
+            // =======================================
+            // 1.   Use result.findViewById(R.id.Xyz) to set the text, or visibility of each of the row layout
+            //
+            // *** HINT: take a look at MenuActivity.onCreate to see how the findViewById method is used.
 
             return result;
         }

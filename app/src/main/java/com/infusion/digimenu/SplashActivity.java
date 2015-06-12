@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.infusion.digimenu.datasource.MenuDataSource;
-import com.infusion.digimenu.datasource.MenuDataSourceHttpImpl;
+import com.infusion.digimenu.datasource.MenuDataSourceImpl;
 import com.infusion.digimenu.model.Menu;
 
 import java.util.Observable;
@@ -26,7 +26,7 @@ public class SplashActivity extends Activity implements Observer {
         applyTypeface((TextView) findViewById(R.id.titleTextView));
         applyTypeface((TextView) findViewById(R.id.loadingTextView));
 
-        mMenuDataSource = new MenuDataSourceHttpImpl();
+        mMenuDataSource = new MenuDataSourceImpl(this);
     }
 
     @Override
