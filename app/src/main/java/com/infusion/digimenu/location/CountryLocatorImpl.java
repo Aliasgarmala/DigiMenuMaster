@@ -60,16 +60,13 @@ public class CountryLocatorImpl extends CountryLocator implements LocationListen
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
-        Log.d(this.getClass().getName(), "onStatusChanged");
     }
 
     @Override
     public void onProviderEnabled(String s) {
-        Log.d(this.getClass().getName(), "onProviderEnabled");
     }
 
     @Override
     public void onProviderDisabled(String s) {
-        Log.d(this.getClass().getName(), "onProviderDisabled");
     }
 }
