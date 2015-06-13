@@ -21,6 +21,13 @@ public class CountryLocatorImpl extends CountryLocator implements LocationListen
     }
 
     public void locateCountry() {
+        //If providers not found, notify the observers. No need for registering for location updates
+        if (!(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
+            setChanged();
+            notifyObservers(COUNTRY_UNKNOWN);
+            return;
+        }
         //Register for receiving location updates
         mLocationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
     }

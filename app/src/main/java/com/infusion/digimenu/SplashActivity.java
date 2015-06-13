@@ -39,12 +39,6 @@ public class SplashActivity extends Activity implements Observer {
 
         mCountryLocator.addObserver(this);
         mCountryLocator.locateCountry();
-
-//        String country = getCountry();
-//
-//        // retrieve the latest menu
-//        mMenuDataSource.addObserver(this);
-//        mMenuDataSource.getMenuAsync(country);
     }
 
     @Override

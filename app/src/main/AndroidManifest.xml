@@ -3,6 +3,7 @@
     package="com.infusion.digimenu">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Add permission ACCESS_FINE_LOCATION -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application

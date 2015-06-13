@@ -1,18 +1,11 @@
 package com.infusion.digimenu;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -63,7 +56,7 @@ public class MenuItemActivity extends ActionBarActivity {
         mLikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                animateLikeButtonOut();
+                //TODO: (6) call animateLikeButtonOut() method to play an exit animation for the button
                 sendLike(menuItem.id);
             }
         });
@@ -82,7 +75,10 @@ public class MenuItemActivity extends ActionBarActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        animateLikeButtonInViewXml();
+        //TODO: (1) Animate the Like button when the activity is displayed
+        //We will be achieving the same animation effect by few different methods available to us from Android framework
+        //We will be implementing appropriately named method (animateLikeButtonIn....()) and call it here
+        animateLikeButtonInViewCode();
     }
 
     private void sendLike(int menuItemId) {
@@ -93,40 +89,53 @@ public class MenuItemActivity extends ActionBarActivity {
         startService(intent);
     }
 
-    private void animateLikeButtonInViewPropertyAnim() {
-        float y = mLikeButton.getY();
-        mLikeButton.setY(-mLikeButton.getHeight());
-        mLikeButton.animate().setInterpolator(new BounceInterpolator()).setDuration(1000).y(y);
-        Log.d(this.getClass().getName(), "onWindowFocusChanged");
-    }
-
     private void animateLikeButtonInViewCode() {
-        TranslateAnimation animation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF, 0f, //From X
-                Animation.RELATIVE_TO_SELF, 0f, //To X
-                Animation.RELATIVE_TO_PARENT, -1f, //From Y
-                Animation.RELATIVE_TO_SELF, 0f);  //To Y
-        animation.setFillBefore(true);
-        animation.setInterpolator(new BounceInterpolator());
-        animation.setDuration(1000);
-        mLikeButton.setAnimation(animation);
-        animation.start();
+        //TODO: (2) Create an animation object in code, attach it to the 'Like' button and play it
+        //Description of the Animation:
+        //  'Like' button drops from the top of the screen to it's resting location
+        //  When the 'Like' button reaches the resting location, it bounces before it settles
+        //  The total duration of the animation is 1 second
+        //
+        //  Hint: Look for TranslateAnimation class provided by Android Animation Framework
     }
 
     private void animateLikeButtonInViewXml() {
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.like_button_in);
-        mLikeButton.setAnimation(animation);
-        animation.start();
+        //TODO: (3) Create an animation in XML, load it an attach to the 'Like' button.
+        //Call this method in onWindowFocusChanged()
+        //Description of the Animation:
+        //  'Like' button drops from the top of the screen to it's resting location
+        //  When the 'Like' button reaches the resting location, it bounces before it settles
+        //  The total duration of the animation is 1 second
+        //
+        //  Hint: create the animation xml file (like_button_in.xml) in /res/anim folder (right-click folder->New->Animation Resource File)
+        //  Use AnimationUtils to load the animation
     }
 
     private void animateLikeButtonInPropertyAnim() {
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mLikeButton, "y", -mLikeButton.getHeight(), mLikeButton.getY());
-        objectAnimator.setDuration(1000);
-        objectAnimator.setInterpolator(new BounceInterpolator());
-        objectAnimator.start();
+        //TODO: (4) Create a property animation for the "y" property of 'Like' button
+        //Call this method in onWindowFocusChanged()
+        //Description of the Animation:
+        //  'Like' button drops from the top of the screen to it's resting location
+        //  When the 'Like' button reaches the resting location, it bounces before it settles
+        //  The total duration of the animation is 1 second
+        //
+        //  Hint: Use ObjectAnimator->ofFloat method for creating the animation
+    }
+
+    private void animateLikeButtonInViewPropertyAnim() {
+        //TODO: (5) Animate the 'Like' button using ViewPropertyAnimator
+        //Call this method in onWindowFocusChanged()
+        //Description of the Animation:
+        //  'Like' button drops from the top of the screen to it's resting location
+        //  When the 'Like' button reaches the resting location, it bounces before it settles
+        //  The total duration of the animation is 1 second
+        //
+        //  Hint: Call animate() method of the button to access ViewPropertyAnimator
     }
 
     private void animateLikeButtonOut() {
-        mLikeButton.animate().scaleY(0f).scaleX(0f).setInterpolator(new AnticipateInterpolator()).alpha(0).setDuration(500);
+        //TODO: (7) LAB 5 : Animations - Play an animation when the 'Like' button is clicked
+        // Make the button gradually shrink and increase transparency until it disappears
+        // Use ViewPropertyAnimator of the button for this
     }
 }

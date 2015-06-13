@@ -71,7 +71,11 @@ public class MenuCategoryFragment extends Fragment {
                 intent.putExtras(bundle);
 
                 startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+                //TODO: (8) Add a custom animation for the activity transition.
+                // Make the new activity (MenuItemActivity) slide in from the bottom while existing activity
+                // slides out to the top.
+                // Hint - check for a method in the Activity to override the activity transitions
+                // Hint - Look for custom animation XML files in /res/anim folder
             }
         });
 
