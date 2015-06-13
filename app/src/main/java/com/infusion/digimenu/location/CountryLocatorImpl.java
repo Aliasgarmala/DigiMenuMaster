@@ -1,72 +1,30 @@
 package com.infusion.digimenu.location;
 
 import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
-import android.util.Log;
 
-public class CountryLocatorImpl extends CountryLocator implements LocationListener {
+//TODO: (4) Implement LocationListener Interface
+//  In the overridden  onLocationChanged() method, obtain the location and find the country name using the CountryNameFinder class
+//  This can be time consuming task so make sure to spawn a thread for it.
+//  Notify listeners with the country name.
+//  Also handle the situation where country name couldn't be determined (notify listeners with COUNTRY_UNKNOWN)
+public class CountryLocatorImpl extends CountryLocator {
 
-    public static final String COUNTRY_UNKNOWN = "Unknown";
+    public static final String COUNTRY_UNKNOWN = "Unknown"; //Notify observers with this when country name couldn't be located
     private final Context mContext;
     private LocationManager mLocationManager;
 
     public CountryLocatorImpl(Context context) {
         this.mContext = context;
 
-        //Get LocationManager instance
-        mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        //TODO: (2) Obtain a reference to the Location manager (Hint: getSystemService(Context.LOCATION_SERVICE) )
     }
 
+    //Called by the client of this class to initiate finding the location
     public void locateCountry() {
-        //If providers not found, notify the observers. No need for registering for location updates
-        if (!(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
-            setChanged();
-            notifyObservers(COUNTRY_UNKNOWN);
-            return;
-        }
-        //Register for receiving location updates
-        mLocationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, this, null);
+        //Request Location updates from Location Manager
+        //TODO: (3) Request location updates (GPS) from Location Manager
+        //Hint: call requestSingleUpdate method with GPS Provider
     }
 
-    private void findCountryByLocation(final Location location) {
-
-        //We are going to query the Google API over wi-fi for this. This could be time consuming.
-        //So, let's spin up a thread for this.
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String countryName = CountryNameFinder.getCountryNameByLocation(location.getLatitude(), location.getLongitude());
-                setChanged();
-                notifyObservers(null == countryName ? COUNTRY_UNKNOWN : countryName);
-            }
-        }).start();
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.d(this.getClass().getName(), "onLocationChanged");
-
-        //Stop Listening to Location Updates
-        mLocationManager.removeUpdates(this);
-
-        //Find the country name for the location received
-        findCountryByLocation(location);
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-    }
 }

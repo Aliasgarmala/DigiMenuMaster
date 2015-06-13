@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.infusion.digimenu.datasource.MenuDataSource;
 import com.infusion.digimenu.datasource.MenuDataSourceHttpImpl;
 import com.infusion.digimenu.location.CountryLocator;
-import com.infusion.digimenu.location.CountryLocatorImpl;
 import com.infusion.digimenu.model.Menu;
 
 import java.util.Observable;
@@ -30,22 +29,30 @@ public class SplashActivity extends Activity implements Observer {
         applyTypeface((TextView) findViewById(R.id.loadingTextView));
 
         mMenuDataSource = new MenuDataSourceHttpImpl();
-        mCountryLocator = new CountryLocatorImpl(this);
+        //TODO: (5) Instantiate mCountryLocator with a new CountryLocatorImpl object
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        mCountryLocator.addObserver(this);
-        mCountryLocator.locateCountry();
+        //TODO: (6) Remove following line. We are going to find the country by location
+        String country = getCountry();
+
+        //TODO: (7) Subscribe to Country Locator and request country name
+
+        //TODO: (8) Comment the following code. We can't attempt to get location based manu before finding the contry name
+        //We will do this when we receive the country name
+        // retrieve the latest menu
+        mMenuDataSource.addObserver(this);
+        mMenuDataSource.getMenuAsync(country);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        mCountryLocator.deleteObserver(this);
+        //TODO: (9) Unsubscribe from Country Locator
         mMenuDataSource.deleteObserver(this);
     }
 
@@ -56,14 +63,15 @@ public class SplashActivity extends Activity implements Observer {
             return;
         }
 
-        if (observable instanceof CountryLocator) {
-            String country = (String) data;
-            // retrieve the latest menu
-            mMenuDataSource.addObserver(this);
-            mMenuDataSource.getMenuAsync(country);
-        } else if (observable instanceof MenuDataSource) {
+        //  We have subscribed to two Observables (CountryLocator and MenuDataSource) and receive notifications from both
+        //  of them here. Use reflection on the observable to determine the source of the notification
+        if( observable instanceof  MenuDataSource) {
             handleMenuRetrieved((Menu) data);
         }
+        //TODO: (10) Listen to CountryLocator notifications here by adding an 'else' clause here
+        //  When we receive the country name, subscribe to the MenuDataSource and request menu
+        //  (move commented code from onResume() here)
+
     }
 
     private void handleMenuRetrieved(Menu menu) {
@@ -77,6 +85,7 @@ public class SplashActivity extends Activity implements Observer {
         finish();
     }
 
+    //TODO: (11) Remove this method. We are not using hard-coded country name any more
     private String getCountry() {
         return "Canada";
     }
