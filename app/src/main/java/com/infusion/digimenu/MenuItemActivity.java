@@ -95,7 +95,11 @@ public class MenuItemActivity extends ActionBarActivity {
         //  When the 'Like' button reaches the resting location, it bounces before it settles
         //  The total duration of the animation is 1 second
         //
-        //  Hint: Look for TranslateAnimation class provided by Android Animation Framework
+        //  Hint: Look for TranslateAnimation class provided by Android Animation Framework.
+        //  Use the constructor TranslateAnimation(int fromXType, float fromXValue, int toXType, float toXValue, int fromYType, float fromYValue, int toYType, float toYValue)
+        //  Set duration and interpolator
+        //  Set the animation on mLikeButton
+        //  Start the animation
     }
 
     private void animateLikeButtonInViewXml() {
@@ -107,7 +111,9 @@ public class MenuItemActivity extends ActionBarActivity {
         //  The total duration of the animation is 1 second
         //
         //  Hint: create the animation xml file (like_button_in.xml) in /res/anim folder (right-click folder->New->Animation Resource File)
-        //  Use AnimationUtils to load the animation
+        //  Use AnimationUtils to load the animation onto mLikeButton
+        //  Set duration and interpolator
+        //  Start the animation
     }
 
     private void animateLikeButtonInPropertyAnim() {
@@ -118,7 +124,11 @@ public class MenuItemActivity extends ActionBarActivity {
         //  When the 'Like' button reaches the resting location, it bounces before it settles
         //  The total duration of the animation is 1 second
         //
-        //  Hint: Use ObjectAnimator->ofFloat method for creating the animation
+        //  Hint: Use ObjectAnimator->ofFloat(Object target, String propertyName, float... values) method for creating the animation
+        //  Pass mLikeButton as target, use "y" for property name and specify starting and ending values
+        //  Set duration and interpolator
+        //  Start the animation
+
     }
 
     private void animateLikeButtonInViewPropertyAnim() {
@@ -130,11 +140,13 @@ public class MenuItemActivity extends ActionBarActivity {
         //  The total duration of the animation is 1 second
         //
         //  Hint: Call animate() method of the button to access ViewPropertyAnimator
+        //  ViewPropertyAnimator doesn't set the initial position of the view. You will have to place it above to top of the screen
+        //  before you start the animation.
     }
 
     private void animateLikeButtonOut() {
         //TODO: (6) LAB 5 : Animations - Play an animation when the 'Like' button is clicked
-        // Make the button gradually shrink and increase transparency until it disappears
+        // Make the button gradually shrink and increase transparency until it disappears. Use AnticipateInterpolator and set duration to 500ms
         // Use ViewPropertyAnimator of the button for this
     }
 }
