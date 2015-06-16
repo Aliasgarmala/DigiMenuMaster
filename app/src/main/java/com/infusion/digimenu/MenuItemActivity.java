@@ -56,7 +56,7 @@ public class MenuItemActivity extends ActionBarActivity {
         mLikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: (6) call animateLikeButtonOut() method to play an exit animation for the button
+                //TODO: (5) call animateLikeButtonOut() method to play an exit animation for the button
                 sendLike(menuItem.id);
             }
         });
@@ -75,7 +75,6 @@ public class MenuItemActivity extends ActionBarActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        //TODO: (1) Animate the Like button when the activity is displayed
         //We will be achieving the same animation effect by few different methods available to us from Android framework
         //We will be implementing appropriately named method (animateLikeButtonIn....()) and call it here
         animateLikeButtonInViewCode();
@@ -90,7 +89,7 @@ public class MenuItemActivity extends ActionBarActivity {
     }
 
     private void animateLikeButtonInViewCode() {
-        //TODO: (2) Create an animation object in code, attach it to the 'Like' button and play it
+        //TODO: (1) Create an animation object in code, attach it to the 'Like' button and play it
         //Description of the Animation:
         //  'Like' button drops from the top of the screen to it's resting location
         //  When the 'Like' button reaches the resting location, it bounces before it settles
@@ -100,7 +99,7 @@ public class MenuItemActivity extends ActionBarActivity {
     }
 
     private void animateLikeButtonInViewXml() {
-        //TODO: (3) Create an animation in XML, load it an attach to the 'Like' button.
+        //TODO: (2) Create an animation in XML, load it an attach to the 'Like' button.
         //Call this method in onWindowFocusChanged()
         //Description of the Animation:
         //  'Like' button drops from the top of the screen to it's resting location
@@ -112,7 +111,7 @@ public class MenuItemActivity extends ActionBarActivity {
     }
 
     private void animateLikeButtonInPropertyAnim() {
-        //TODO: (4) Create a property animation for the "y" property of 'Like' button
+        //TODO: (3) Create a property animation for the "y" property of 'Like' button
         //Call this method in onWindowFocusChanged()
         //Description of the Animation:
         //  'Like' button drops from the top of the screen to it's resting location
@@ -123,7 +122,7 @@ public class MenuItemActivity extends ActionBarActivity {
     }
 
     private void animateLikeButtonInViewPropertyAnim() {
-        //TODO: (5) Animate the 'Like' button using ViewPropertyAnimator
+        //TODO: (4) Animate the 'Like' button using ViewPropertyAnimator
         //Call this method in onWindowFocusChanged()
         //Description of the Animation:
         //  'Like' button drops from the top of the screen to it's resting location
@@ -134,7 +133,7 @@ public class MenuItemActivity extends ActionBarActivity {
     }
 
     private void animateLikeButtonOut() {
-        //TODO: (7) LAB 5 : Animations - Play an animation when the 'Like' button is clicked
+        //TODO: (6) LAB 5 : Animations - Play an animation when the 'Like' button is clicked
         // Make the button gradually shrink and increase transparency until it disappears
         // Use ViewPropertyAnimator of the button for this
     }
