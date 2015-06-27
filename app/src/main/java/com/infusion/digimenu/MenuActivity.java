@@ -17,7 +17,7 @@ public class MenuActivity extends ActionBarActivity implements ActionBar.TabList
 
     public static final String BUNDLE_MENU = "com.infusion.digimenu.extra.BUNDLE_MENU";
 
-    private ActionBar mActionBar;
+    private ActionBarr mActionBar;
     private ViewPager mViewPager;
 
     @Override
