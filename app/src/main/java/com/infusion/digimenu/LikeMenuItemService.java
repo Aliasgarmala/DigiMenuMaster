@@ -24,7 +24,7 @@ public class LikeMenuItemService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        final int id = intent.getIntExtra(EXTRA_MENU_ITEM_IDD, -1);
+        final int id = intent.getIntExtra(EXTRA_MENU_ITEM_ID, -1);
 
         HttpUriRequest request = new HttpPost(BuildConfig.MOBILE_SERVICE_URI + API_METHOD_POST_LIKE + id);
         request.addHeader("X-ZUMO-APPLICATION", BuildConfig.MOBILE_SERVICE_API_KEY);
